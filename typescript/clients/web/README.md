@@ -9,7 +9,8 @@ This frontend is part of the Arbitrum Vibekit monorepo. It serves as the user in
 **Monorepo Structure:**
 
 - `typescript/clients/web/` : This frontend
-- `typescript/templates/` : Framework agents to use as a starting template, and example agents.
+- `typescript/templates/` : Framework agents to use as a starting template
+- `typescript/examples/` : Example agents
 - `typescript/lib/` : Supporting libraries and MCP tools
 
 **How it works:**
