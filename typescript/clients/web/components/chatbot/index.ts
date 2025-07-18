@@ -17,7 +17,7 @@ export interface ChatbotConfig {
 // Utility function to detect active agents based on environment
 export function getActiveAgents(): string[] {
   // Return all agents that are defined in compose.yml and running
-  return ['ember-aave', 'ember-camelot', 'ember-counter'];
+  return ['ember-aave', 'ember-camelot', 'ember-lp', 'allora-price-prediction-agent', 'ember-pendle'];
 }
 
 // Utility to create agent URL mappings for different environments
@@ -26,12 +26,16 @@ export function getAgentUrls(environment: 'development' | 'production' = 'develo
     development: {
       'ember-aave': 'http://lending-agent-no-wallet:3001/sse',
       'ember-camelot': 'http://swapping-agent-no-wallet:3005/sse',
-      'ember-counter': 'http://counter-agent-no-wallet:3010/sse',
+      'ember-lp': 'http://liquidity-agent-no-wallet:3002/sse',
+      'allora-price-prediction-agent': 'http://allora-price-prediction-agent:3008/sse',
+      'ember-pendle': 'http://pendle-agent:3003/sse',
     },
     production: {
-      'ember-aave': 'https://your-domain.com/lending-agent/sse',
-      'ember-camelot': 'https://your-domain.com/swapping-agent/sse', 
-      'ember-counter': 'https://your-domain.com/counter-agent/sse',
+      'ember-aave': 'http://lending-agent-no-wallet:3001/sse',
+      'ember-camelot': 'http://swapping-agent-no-wallet:3005/sse',
+      'ember-lp': 'http://liquidity-agent-no-wallet:3002/sse',
+      'allora-price-prediction-agent': 'http://allora-price-prediction-agent:3008/sse',
+      'ember-pendle': 'http://pendle-agent:3003/sse',
     }
   };
   

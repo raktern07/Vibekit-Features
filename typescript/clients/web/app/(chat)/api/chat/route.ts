@@ -186,7 +186,7 @@ export async function POST(request: Request) {
 
     // Map frontend model names to provider model IDs
     const modelMapping: Record<string, string> = {
-      'deepseek/deepseek-chat-v3-0324:free': 'chat-model',
+      'x-ai/grok-3-mini': 'chat-model',
       'chat-model': 'chat-model',
       'chat-model-medium': 'chat-model-medium',
     };

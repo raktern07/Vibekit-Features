@@ -183,7 +183,7 @@ POST /api/chat
 {
   "id": "chat-session-id",
   "messages": [...],
-  "selectedChatModel": "deepseek/deepseek-chat-v3-0324:free",
+  "selectedChatModel": "x-ai/grok-3-mini",
   "context": {
     "walletAddress": "0x..."
   }
