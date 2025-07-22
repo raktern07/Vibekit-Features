@@ -11,7 +11,7 @@ import { saveChatAgentAsCookie } from '@/app/(chat)/actions';
 import { MessageRenderer } from '../message.renderer';
 import { TransactionPreview } from './TransactionPreview';
 import { Markdown } from '../markdown';
-import type { UIMessage } from 'ai';
+import type { Message, UIMessage } from 'ai';
 
 // Global CSS fix for chatbot transaction previews and text visibility
 const chatbotStyles = `
@@ -277,11 +277,11 @@ export function ChatbotWidget({
   // Tooltip state with delay
   const handleTooltipShow = () => {
     if (tooltipTimeout.current) clearTimeout(tooltipTimeout.current);
-    tooltipTimeout.current = setTimeout(() => setShowTooltip(true), 150);
+    tooltipTimeout.current = window.setTimeout(() => setShowTooltip(true), 150);
   };
   const handleTooltipHide = () => {
     if (tooltipTimeout.current) clearTimeout(tooltipTimeout.current);
-    tooltipTimeout.current = setTimeout(() => setShowTooltip(false), 100);
+    tooltipTimeout.current = window.setTimeout(() => setShowTooltip(false), 100); 
   };
 
   return (

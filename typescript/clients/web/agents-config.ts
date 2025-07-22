@@ -1,17 +1,17 @@
 export const chatAgents = [
-  // {
-  //   id: 'ember-aave' as const,
-  //   name: 'Lending',
-  //   description: 'AAVE lending agent',
-  //   suggestedActions: [
-  //     {
-  //       title: 'Deposit WETH',
-  //       label: 'to my balance',
-  //       action: 'Deposit WETH to my balance',
-  //     },
-  //     { title: 'Check', label: 'balance', action: 'Check balance' },
-  //   ],
-  // },
+  {
+    id: 'ember-aave' as const,
+    name: 'Lending',
+    description: 'AAVE lending agent',
+    suggestedActions: [
+      {
+        title: 'Deposit WETH',
+        label: 'to my balance',
+        action: 'Deposit WETH to my balance',
+      },
+      { title: 'Check', label: 'balance', action: 'Check balance' },
+    ],
+  },
   {
     id: 'ember-camelot' as const,
     name: 'Trading',
@@ -170,23 +170,23 @@ export const chatAgents = [
       },
     ],
   },
-  // {
-  //   id: "ember-pendle" as const,
-  //   name: "Pendle",
-  //   description: "Test agent for Pendle",
-  //   suggestedActions: [
-  //     {
-  //       title: "Deposit WETH",
-  //       label: "to my balance",
-  //       action: "Deposit WETH to my balance",
-  //     },
-  //     {
-  //       title: "Check",
-  //       label: "balance",
-  //       action: "Check balance",
-  //     },
-  //   ],
-  // },
+  {
+    id: "ember-pendle" as const,
+    name: "Pendle",
+    description: "Test agent for Pendle",
+    suggestedActions: [
+      {
+        title: "Deposit WETH",
+        label: "to my balance",
+        action: "Deposit WETH to my balance",
+      },
+      {
+        title: "Check",
+        label: "balance",
+        action: "Check balance",
+      },
+    ],
+  },
   {
     id: 'all' as const,
     name: 'All agents',
@@ -207,7 +207,7 @@ export const chatAgents = [
 ] as const;
 
 export const DEFAULT_SERVER_URLS = new Map<ChatAgentId, string>([
-  // ['ember-aave', 'http://lending-agent-no-wallet:3001/sse'],
+  ['ember-aave', 'http://lending-agent-no-wallet:3001/sse'],
   ['ember-camelot', 'http://swapping-agent-no-wallet:3005/sse'],
   // ['ember-counter', 'http://counter-agent-no-wallet:3010/sse'],
   // ['ember-multisig-trade', 'http://multisig-trade-agent:3011/sse'],
@@ -215,7 +215,7 @@ export const DEFAULT_SERVER_URLS = new Map<ChatAgentId, string>([
   // ['quickstart-agent-template', 'http://quickstart-agent-template:3007/sse'],
   ['allora-price-prediction-agent', 'http://allora-price-prediction-agent:3008/sse'],
   ["ember-lp", "http://liquidity-agent-no-wallet:3002/sse"],
-  // ["ember-pendle", "http://pendle-agent:3003/sse"],
+  ["ember-pendle", "http://pendle-agent:3003/sse"],
 ]);
 
 export type ChatAgentId = (typeof chatAgents)[number]['id'];

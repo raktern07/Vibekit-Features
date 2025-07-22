@@ -1,17 +1,17 @@
 services:
-  # lending-agent-no-wallet:
-  #   build:
-  #     context: ./
-  #     dockerfile: examples/lending-agent-no-wallet/Dockerfile
-  #   container_name: vibekit-lending-agent-no-wallet
-  #   env_file:
-  #     - path: .env
-  #       required: true
-  #     - path: examples/lending-agent-no-wallet/.env
-  #       required: false
-  #   ports:
-  #     - 3001:3001
-  #   restart: unless-stopped
+  lending-agent-no-wallet:
+    build:
+      context: ./
+      dockerfile: examples/lending-agent-no-wallet/Dockerfile
+    container_name: vibekit-lending-agent-no-wallet
+    env_file:
+      - path: .env
+        required: true
+      - path: examples/lending-agent-no-wallet/.env
+        required: false
+    ports:
+      - 3001:3001
+    restart: unless-stopped
 
   swapping-agent-no-wallet:
     build:
@@ -113,19 +113,19 @@ services:
       - 3002:3002
     restart: unless-stopped
 
-  # pendle-agent:
-  #   build:
-  #     context: ./
-  #     dockerfile: examples/pendle-agent/Dockerfile
-  #   container_name: vibekit-pendle-agent
-  #   env_file:
-  #     - path: .env
-  #       required: true
-  #     - path: examples/pendle-agent/.env
-  #       required: false
-  #   ports:
-  #     - 3003:3003
-  #   restart: unless-stopped
+  pendle-agent:
+    build:
+      context: ./
+      dockerfile: examples/pendle-agent/Dockerfile
+    container_name: vibekit-pendle-agent
+    env_file:
+      - path: .env
+        required: true
+      - path: examples/pendle-agent/.env
+        required: false
+    ports:
+      - 3003:3003
+    restart: unless-stopped
 
   # swapping-agent:
   #   build:

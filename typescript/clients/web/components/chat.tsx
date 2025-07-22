@@ -2,7 +2,7 @@
 
 import type { Attachment, UIMessage } from 'ai';
 import { useChat } from '@ai-sdk/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { ChatHeader } from '@/components/chat-header';
 import type { Vote } from '@/lib/db/schema';
@@ -16,6 +16,8 @@ import { toast } from 'sonner';
 import { useAccount } from 'wagmi';
 import { useSession } from 'next-auth/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { AgeVerificationModal, isAgeVerificationValid } from './age-verification-modal';
+import { LocationVerifier } from './location-verifier';
 
 export function Chat({
   id,
@@ -37,6 +39,60 @@ export function Chat({
   const { data: session } = useSession();
 
   const [selectedChatAgent, _setSelectedChatAgent] = useState(initialChatAgent);
+  const [isAgeVerified, setIsAgeVerified] = useState<boolean>(false);
+  const [showAgeVerification, setShowAgeVerification] = useState<boolean>(false);
+  const [isLocationVerified, setIsLocationVerified] = useState<boolean>(false);
+  const [showLocationVerification, setShowLocationVerification] = useState<boolean>(false);
+
+  // Check age and location verification status on component mount and when session changes
+  useEffect(() => {
+    if (session?.user && address) {
+      const isAgeValid = isAgeVerificationValid();
+      const isLocationValid = sessionStorage.getItem('location_verified') === 'true';
+      
+      setIsAgeVerified(isAgeValid);
+      setIsLocationVerified(isLocationValid);
+      
+      // Show age verification first if not done
+      if (!isAgeValid) {
+        setShowAgeVerification(true);
+        setShowLocationVerification(false);
+      }
+      // Show location verification if age is done but location is not
+      else if (isAgeValid && !isLocationValid) {
+        setShowAgeVerification(false);
+        setShowLocationVerification(true);
+      }
+      // Both are verified
+      else {
+        setShowAgeVerification(false);
+        setShowLocationVerification(false);
+      }
+    }
+  }, [session, address]);
+
+  const handleAgeVerificationComplete = (verified: boolean) => {
+    setIsAgeVerified(verified);
+    setShowAgeVerification(false);
+    if (verified) {
+      // Check if location is already verified
+      const isLocationValid = sessionStorage.getItem('location_verified') === 'true';
+      if (isLocationValid) {
+        setIsLocationVerified(true);
+        toast.success('Welcome! You can now access Ember Agents.');
+      } else {
+        // Show location verification after age verification
+        setShowLocationVerification(true);
+        toast.success('Age verification complete! Now please verify your location.');
+      }
+    }
+  };
+
+  const handleLocationVerificationComplete = () => {
+    setIsLocationVerified(true);
+    setShowLocationVerification(false);
+    toast.success('Location verification complete! Welcome to Ember Agents.');
+  };
 
   const { messages, setMessages, handleSubmit, input, setInput, append, status, stop, reload } =
     useChat({
@@ -71,6 +127,7 @@ export function Chat({
   return (
     <>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
+        {/* Wallet Connection Layer */}
         {(!session || !session?.user) && (
           <div className="fixed inset-0 backdrop-blur-sm bg-background/70 z-50 flex flex-col items-center justify-center gap-4">
             <h2 className="text-xl font-semibold">Connect Your Wallet</h2>
@@ -80,13 +137,23 @@ export function Chat({
             <ConnectButton />
           </div>
         )}
+
+        {/* Age Verification Layer */}
+        {session?.user && address && showAgeVerification && (
+          <AgeVerificationModal onVerificationComplete={handleAgeVerificationComplete} />
+        )}
+
+        {/* Location Verification Layer */}
+        {session?.user && address && isAgeVerified && showLocationVerification && (
+          <LocationVerifier onVerificationSuccess={handleLocationVerificationComplete} />
+        )}
         <ChatHeader />
 
         <Messages
           chatId={id}
           status={status}
           votes={votes}
-          messages={messages}
+          messages={messages as UIMessage[]}
           setMessages={setMessages}
           reload={reload}
           isReadonly={isReadonly}
@@ -94,7 +161,7 @@ export function Chat({
         />
 
         <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
-          {!isReadonly && (
+          {!isReadonly && session?.user && address && isAgeVerified && isLocationVerified && (
             <MultimodalInput
               chatId={id}
               input={input}
@@ -104,7 +171,7 @@ export function Chat({
               stop={stop}
               attachments={attachments}
               setAttachments={setAttachments}
-              messages={messages}
+              messages={messages as UIMessage[]}  
               setMessages={setMessages}
               append={append}
               selectedAgentId={selectedChatAgent}
@@ -113,23 +180,25 @@ export function Chat({
         </form>
       </div>
 
-      <Artifact
-        chatId={id}
-        input={input}
-        setInput={setInput}
-        handleSubmit={handleSubmit}
-        status={status}
-        stop={stop}
-        attachments={attachments}
-        setAttachments={setAttachments}
-        append={append}
-        messages={messages}
-        setMessages={setMessages}
-        reload={reload}
-        votes={votes}
-        isReadonly={isReadonly}
-        selectedAgentId={selectedChatAgent}
-      />
+      {session?.user && address && isAgeVerified && isLocationVerified && (
+        <Artifact
+          chatId={id}
+          input={input}
+          setInput={setInput}
+          handleSubmit={handleSubmit}
+          status={status}
+          stop={stop}
+          attachments={attachments}
+          setAttachments={setAttachments}
+          append={append}
+          messages={messages as UIMessage[]}
+          setMessages={setMessages}
+          reload={reload}
+          votes={votes}
+          isReadonly={isReadonly}
+          selectedAgentId={selectedChatAgent}
+        />
+      )}
     </>
   );
 }
