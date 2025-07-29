@@ -15,7 +15,7 @@ export const Overview = () => {
     >
       <div className="rounded-xl p-6 flex flex-col gap-0 leading-relaxed text-center max-w-xl">
         <h1 className="w-full">
-          Welcome to the <span className="font-semibold">Vibekit</span> Frontend
+          Welcome to the <span className="font-semibold">Maxxit</span> Frontend
         </h1>
         <h2 className="w-full"> For web3 Agents</h2>
         

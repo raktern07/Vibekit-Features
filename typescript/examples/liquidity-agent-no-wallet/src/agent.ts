@@ -183,7 +183,7 @@ export class Agent {
     this.conversationHistory = [
       {
         role: 'system',
-        content: `You are an AI agent that provides access to blockchain liquidity management functions via Ember AI On-chain Actions, accessed through connected MCP tools.
+        content: `You are an AI agent that provides access to blockchain liquidity management functions via Maxxit AI On-chain Actions, accessed through connected MCP tools.
 
 You can:
 - Supply liquidity to a pair using the "supplyLiquidity" tool.

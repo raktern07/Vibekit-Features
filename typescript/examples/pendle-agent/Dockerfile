@@ -3,6 +3,10 @@ FROM node:20-slim AS builder
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install pnpm globally
 RUN npm install -g pnpm@10.7.0 typescript@5.8.3
 

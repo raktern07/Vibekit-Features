@@ -341,7 +341,7 @@ export function LocationVerifier({ onVerificationSuccess }: LocationVerifierProp
           </div>
           <CardTitle className="text-2xl">Location Verification Required</CardTitle>
           <CardDescription>
-            Please verify your location to access chat functionality with Ember Agents
+            Please verify your location to access chat functionality with Maxxit Agents
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

@@ -127,7 +127,7 @@ export function AgeVerificationModal({ onVerificationComplete }: AgeVerification
       } else {
         // User is under 18 - show persistent failure message
         setVerificationFailed(true);
-        setError('You must be 18 or older to access Ember Agents. The zero-knowledge proof has confirmed that you do not meet the minimum age requirement.');
+        setError('You must be 18 or older to access Maxxit Agents. The zero-knowledge proof has confirmed that you do not meet the minimum age requirement.');
         toast.error('Access denied: You must be 18 or older to use this service.');
         // Don't call onVerificationComplete(false) to keep the modal open
       }
@@ -166,7 +166,7 @@ export function AgeVerificationModal({ onVerificationComplete }: AgeVerification
           <p className="text-muted-foreground">
             {verificationFailed 
               ? 'You must be 18 or older to access this application. The age verification process has been completed using zero-knowledge proofs.'
-              : 'Please verify that you are 18 or older to access Ember Agents using zero-knowledge proof technology.'
+              : 'Please verify that you are 18 or older to access Maxxit Agents using zero-knowledge proof technology.'
             }
           </p>
         </div>

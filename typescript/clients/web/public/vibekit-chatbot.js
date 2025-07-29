@@ -1,6 +1,6 @@
 /**
- * Vibekit AI Chatbot - Standalone Embedding Script
- * This script allows embedding the Vibekit AI chatbot on any website
+ * Maxxit AI Chatbot - Standalone Embedding Script
+ * This script allows embedding the Maxxit AI chatbot on any website
  */
 
 (function(window, document) {
@@ -127,7 +127,7 @@
       
       header.innerHTML = `
         <div>
-          <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Vibekit AI</h3>
+            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Maxxit AI</h3>
           <p style="margin: 0; font-size: 14px; opacity: 0.9;">DeFi Assistant</p>
         </div>
         <button id="vibekit-close-btn" style="background: none; border: none; color: white; cursor: pointer; font-size: 20px;">&times;</button>
@@ -148,7 +148,7 @@
           <div style="display: flex; align-items: start; gap: 12px;">
             <div style="background-color: ${config.primaryColor}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI</div>
             <div>
-              <p style="margin: 0 0 8px 0; font-weight: 600; color: #1f2937;">Welcome to Vibekit AI! 👋</p>
+              <p style="margin: 0 0 8px 0; font-weight: 600; color: #1f2937;">Welcome to Maxxit AI! 👋</p>
               <p style="margin: 0; color: #6b7280; font-size: 14px;">I can help you with DeFi operations like lending, trading, and more. Connect your wallet to get started!</p>
             </div>
           </div>

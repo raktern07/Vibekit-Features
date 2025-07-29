@@ -11,8 +11,8 @@ import { SessionProvider } from 'next-auth/react';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://github.com/EmberAGI/arbitrum-vibekit'),
-  title: 'Arbitrum Vibekit',
-  description: 'Vibecode DeFi agents in minutes.',
+  title: 'Maxxit AI Agents',
+  description: 'Maxxit AI Agents',
 };
 
 export const viewport = {

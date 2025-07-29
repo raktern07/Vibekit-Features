@@ -207,7 +207,7 @@ export class Agent {
     this.conversationHistory = [
       {
         role: 'system',
-        content: `You are an assistant that provides access to Pendle Protocol functionality via Ember AI On-chain Actions.
+        content: `You are an assistant that provides access to Pendle Protocol functionality via Maxxit AI On-chain Actions.
 
 You can help users interact with Pendle yield markets, which separate yield-bearing tokens into Principal Tokens (PT) and Yield Tokens (YT).
 

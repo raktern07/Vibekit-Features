@@ -42,7 +42,7 @@ const queryClient = new QueryClient({
 
 export function ChatbotProvider({
   projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '1234567890abcdef',
-  appName = 'Vibekit AI Chatbot',
+  appName = 'Maxxit AI Chatbot',
   position = 'bottom-right',
   primaryColor = '#0ea5e9',
   borderRadius = '12px',

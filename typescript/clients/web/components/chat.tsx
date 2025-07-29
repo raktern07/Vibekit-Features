@@ -18,6 +18,7 @@ import { useSession } from 'next-auth/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { AgeVerificationModal, isAgeVerificationValid } from './age-verification-modal';
 import { LocationVerifier } from './location-verifier';
+import { CryptoCarousel } from './crypto-tweets-carousel';
 
 export function Chat({
   id,
@@ -49,10 +50,10 @@ export function Chat({
     if (session?.user && address) {
       const isAgeValid = isAgeVerificationValid();
       const isLocationValid = sessionStorage.getItem('location_verified') === 'true';
-      
+
       setIsAgeVerified(isAgeValid);
       setIsLocationVerified(isLocationValid);
-      
+
       // Show age verification first if not done
       if (!isAgeValid) {
         setShowAgeVerification(true);
@@ -79,7 +80,7 @@ export function Chat({
       const isLocationValid = sessionStorage.getItem('location_verified') === 'true';
       if (isLocationValid) {
         setIsLocationVerified(true);
-        toast.success('Welcome! You can now access Ember Agents.');
+        toast.success('Welcome! You can now access Maxxit Agents.');
       } else {
         // Show location verification after age verification
         setShowLocationVerification(true);
@@ -91,7 +92,7 @@ export function Chat({
   const handleLocationVerificationComplete = () => {
     setIsLocationVerified(true);
     setShowLocationVerification(false);
-    toast.success('Location verification complete! Welcome to Ember Agents.');
+    toast.success('Location verification complete! Welcome to Maxxit Agents.');
   };
 
   const { messages, setMessages, handleSubmit, input, setInput, append, status, stop, reload } =
@@ -132,7 +133,7 @@ export function Chat({
           <div className="fixed inset-0 backdrop-blur-sm bg-background/70 z-50 flex flex-col items-center justify-center gap-4">
             <h2 className="text-xl font-semibold">Connect Your Wallet</h2>
             <p className="text-muted-foreground mb-4">
-              Authentication required to chat with Ember Agents
+              Authentication required to chat with Maxxit Agents
             </p>
             <ConnectButton />
           </div>
@@ -148,6 +149,13 @@ export function Chat({
           <LocationVerifier onVerificationSuccess={handleLocationVerificationComplete} />
         )}
         <ChatHeader />
+
+        {/* Crypto Tweets Carousel */}
+        {/* {session?.user && address && isAgeVerified && isLocationVerified && ( */}
+        <div className="px-4 py-1 bg-background/50 border-b">
+          <CryptoCarousel />
+        </div>
+        {/* )} */}
 
         <Messages
           chatId={id}
@@ -171,7 +179,7 @@ export function Chat({
               stop={stop}
               attachments={attachments}
               setAttachments={setAttachments}
-              messages={messages as UIMessage[]}  
+              messages={messages as UIMessage[]}
               setMessages={setMessages}
               append={append}
               selectedAgentId={selectedChatAgent}

@@ -320,7 +320,7 @@ export function ChatbotWidget({
             <div className="flex items-center gap-3">
               <Bot className="w-6 h-6" />
               <div>
-                <h3 className="font-semibold text-lg">Vibekit AI</h3>
+                <h3 className="font-semibold text-lg">Maxxit AI</h3>
                 <p className="text-sm opacity-90">DeFi Assistant</p>
               </div>
             </div>
@@ -439,7 +439,7 @@ export function ChatbotWidget({
                     <Bot className="w-8 h-8 text-blue-500 mt-1" />
                     <div>
                       <p className="text-gray-800 font-medium mb-2">
-                        Welcome to Vibekit AI! 👋
+                        Welcome to Maxxit AI! 👋
                       </p>
                       <p className="text-gray-600 text-sm">
                         I can help you with DeFi operations like lending, trading, and more.
