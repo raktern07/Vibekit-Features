@@ -26,7 +26,7 @@ export function AppSidebar() {
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
   const user = session?.user;
-  const [showSignals, setShowSignals] = useState(false);
+  const [showSignals, setShowSignals] = useState(true);
   const [refreshSignals, setRefreshSignals] = useState<(() => void) | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 

@@ -46,31 +46,31 @@ export function Chat({
   const [showLocationVerification, setShowLocationVerification] = useState<boolean>(false);
 
   // Check age and location verification status on component mount and when session changes
-  useEffect(() => {
-    if (session?.user && address) {
-      const isAgeValid = isAgeVerificationValid();
-      const isLocationValid = sessionStorage.getItem('location_verified') === 'true';
+  // useEffect(() => {
+  //   if (session?.user && address) {
+  //     const isAgeValid = isAgeVerificationValid();
+  //     const isLocationValid = sessionStorage.getItem('location_verified') === 'true';
 
-      setIsAgeVerified(isAgeValid);
-      setIsLocationVerified(isLocationValid);
+  //     setIsAgeVerified(isAgeValid);
+  //     setIsLocationVerified(isLocationValid);
 
-      // Show age verification first if not done
-      if (!isAgeValid) {
-        setShowAgeVerification(true);
-        setShowLocationVerification(false);
-      }
-      // Show location verification if age is done but location is not
-      else if (isAgeValid && !isLocationValid) {
-        setShowAgeVerification(false);
-        setShowLocationVerification(true);
-      }
-      // Both are verified
-      else {
-        setShowAgeVerification(false);
-        setShowLocationVerification(false);
-      }
-    }
-  }, [session, address]);
+  //     // Show age verification first if not done
+  //     if (!isAgeValid) {
+  //       setShowAgeVerification(true);
+  //       setShowLocationVerification(false);
+  //     }
+  //     // Show location verification if age is done but location is not
+  //     else if (isAgeValid && !isLocationValid) {
+  //       setShowAgeVerification(false);
+  //       setShowLocationVerification(true);
+  //     }
+  //     // Both are verified
+  //     else {
+  //       setShowAgeVerification(false);
+  //       setShowLocationVerification(false);
+  //     }
+  //   }
+  // }, [session, address]);
 
   const handleAgeVerificationComplete = (verified: boolean) => {
     setIsAgeVerified(verified);
@@ -140,14 +140,14 @@ export function Chat({
         )}
 
         {/* Age Verification Layer */}
-        {session?.user && address && showAgeVerification && (
+        {/* {session?.user && address && showAgeVerification && (
           <AgeVerificationModal onVerificationComplete={handleAgeVerificationComplete} />
-        )}
+        )} */}
 
         {/* Location Verification Layer */}
-        {session?.user && address && isAgeVerified && showLocationVerification && (
+        {/* {session?.user && address && isAgeVerified && showLocationVerification && (
           <LocationVerifier onVerificationSuccess={handleLocationVerificationComplete} />
-        )}
+        )} */}
         <ChatHeader />
 
         {/* Crypto Tweets Carousel */}
@@ -169,7 +169,8 @@ export function Chat({
         />
 
         <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
-          {!isReadonly && session?.user && address && isAgeVerified && isLocationVerified && (
+          {/* {!isReadonly && session?.user && address && isAgeVerified && isLocationVerified && ( */}
+          {!isReadonly && session?.user && address && (
             <MultimodalInput
               chatId={id}
               input={input}
@@ -188,7 +189,8 @@ export function Chat({
         </form>
       </div>
 
-      {session?.user && address && isAgeVerified && isLocationVerified && (
+      {/* {session?.user && address && isAgeVerified && isLocationVerified && ( */}
+      {session?.user && address && (
         <Artifact
           chatId={id}
           input={input}

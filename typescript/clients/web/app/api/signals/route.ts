@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const latestSignals = await collection
       .find({})
       .sort({ generatedAt: -1 }) // Sort by generatedAt descending (latest first)
-      .limit(5)
+      .limit(10)
       .toArray();
 
     console.log(`API: Found ${latestSignals.length} signals`);

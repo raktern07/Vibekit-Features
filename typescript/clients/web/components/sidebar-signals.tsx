@@ -222,15 +222,15 @@ export function SidebarSignals({ onRefreshReady }: SidebarSignalsProps) {
         <SidebarMenu>
           {signals.map((signal) => (
             <SidebarMenuItem key={signal._id}>
-              <Tooltip>
-                <TooltipTrigger asChild>
+              {/* <Tooltip> */}
+                {/* <TooltipTrigger asChild> */}
                   <SidebarMenuButton
                     className="flex items-start gap-2 h-auto py-3 px-2 hover:bg-sidebar-accent cursor-pointer group"
-                    onClick={() => {
-                      if (signal.tweet_link) {
-                        window.open(signal.tweet_link, '_blank');
-                      }
-                    }}
+                    // onClick={() => {
+                    //   if (signal.tweet_link) {
+                    //     window.open(signal.tweet_link, '_blank');
+                    //   }
+                    // }}
                   >
                     <div className="flex flex-col items-start text-left min-w-0 flex-1 gap-2">
                       {/* Header with token and signal */}
@@ -280,20 +280,20 @@ export function SidebarSignals({ onRefreshReady }: SidebarSignalsProps) {
                           <Clock className="h-3 w-3" />
                           <span>{signal.signal_data.timeline}</span>
                         </div>
-                        <span>@{signal.twitterHandle}</span>
+                        {/* <span>@{signal.twitterHandle}</span> */}
                       </div>
 
                       {/* Time ago and external link indicator */}
-                      <div className="flex items-center justify-between w-full">
+                      {/* <div className="flex items-center justify-between w-full">
                         <div className="text-xs text-sidebar-foreground/40">
                           {formatDistanceToNow(new Date(signal.generatedAt), { addSuffix: true })}
                         </div>
                         <ExternalLink className="h-3 w-3 text-sidebar-foreground/30 group-hover:text-sidebar-foreground/60" />
-                      </div>
+                      </div> */}
                     </div>
                   </SidebarMenuButton>
-                </TooltipTrigger>
-                <TooltipContent side="right" className="max-w-xs">
+                {/* </TooltipTrigger> */}
+                {/* <TooltipContent side="right" className="max-w-xs">
                   <div className="space-y-2">
                     <div className="font-medium">{signal.signal_data.tokenMentioned} Signal</div>
                     <div className="text-sm">{signal.signal_data.tradeTip}</div>
@@ -301,8 +301,8 @@ export function SidebarSignals({ onRefreshReady }: SidebarSignalsProps) {
                       Click to view original tweet
                     </div>
                   </div>
-                </TooltipContent>
-              </Tooltip>
+                </TooltipContent> */}
+              {/* </Tooltip> */}
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
