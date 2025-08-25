@@ -52,7 +52,7 @@ The v2 framework uses StreamableHTTP as the primary transport:
 ```ts
 // Automatically configured in v2 agents
 const agent = Agent.create(agentConfig, {
-  llm: { model: providers.openrouter('google/gemini-2.5-flash') },
+  llm: { model: providers.openrouter('x-ai/grok-3-mini') },
 });
 
 // Exposes MCP at: http://localhost:3000/mcp

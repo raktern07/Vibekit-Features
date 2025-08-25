@@ -101,7 +101,7 @@ Organize environment variables by category:
 # ================
 # LLM Provider Configuration
 OPENROUTER_API_KEY=sk-or-v1-...
-LLM_MODEL=google/gemini-2.5-flash-preview
+LLM_MODEL=x-ai/grok-3-mini
 
 # Agent Identity
 AGENT_NAME=Production Lending Agent

@@ -88,7 +88,7 @@ const providers = createProviderSelector({
 });
 
 const agent = Agent.create(agentConfig, {
-  llm: { model: providers.openrouter('google/gemini-2.5-flash') }
+  llm: { model: providers.openrouter('x-ai/grok-3-mini') }
 });
 ```
 

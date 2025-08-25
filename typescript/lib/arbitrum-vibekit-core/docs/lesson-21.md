@@ -36,7 +36,7 @@ if (!providers.openrouter) {
 
 ```ts
 // OpenRouter (recommended - access to many models)
-const model = providers.openrouter('google/gemini-2.5-flash-preview');
+const model = providers.openrouter('x-ai/grok-3-mini');
 const model2 = providers.openrouter('openai/gpt-4o');
 const model3 = providers.openrouter('anthropic/claude-3.5-sonnet');
 
@@ -56,7 +56,7 @@ const providers = createProviderSelector({
 
 const agent = Agent.create(agentConfig, {
   llm: {
-    model: providers.openrouter('google/gemini-2.5-flash-preview'),
+    model: providers.openrouter('x-ai/grok-3-mini'),
   },
 });
 ```
@@ -82,7 +82,7 @@ const providers = createProviderSelector({
   openRouterApiKey: process.env.OPENROUTER_API_KEY,
 });
 
-const modelName = process.env.LLM_MODEL || 'google/gemini-2.5-flash-preview';
+const modelName = process.env.LLM_MODEL || 'x-ai/grok-3-mini';
 const model = providers.openrouter(modelName);
 ```
 
@@ -174,7 +174,7 @@ const agent = Agent.create(agentConfig, {
   cors: process.env.ENABLE_CORS !== 'false',
   basePath: process.env.BASE_PATH || undefined,
   llm: {
-    model: providers.openrouter(process.env.LLM_MODEL || 'google/gemini-2.5-flash-preview'),
+    model: providers.openrouter(process.env.LLM_MODEL || 'x-ai/grok-3-mini'),
   },
 });
 ```
@@ -297,7 +297,7 @@ const agent = Agent.create(agentConfig, {
   cors: process.env.ENABLE_CORS !== 'false',
   basePath: process.env.BASE_PATH || undefined,
   llm: {
-    model: providers.openrouter(process.env.LLM_MODEL || 'google/gemini-2.5-flash-preview'),
+    model: providers.openrouter(process.env.LLM_MODEL || 'x-ai/grok-3-mini'),
   },
 });
 
@@ -327,7 +327,7 @@ Standard environment variables for agent configuration:
 # .env
 # LLM Provider
 OPENROUTER_API_KEY=your_key_here
-LLM_MODEL=google/gemini-2.5-flash-preview
+LLM_MODEL=x-ai/grok-3-mini
 
 # Agent Identity
 AGENT_NAME=My Custom Agent

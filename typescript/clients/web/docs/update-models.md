@@ -67,19 +67,19 @@ export const openRouterProvider = isTestEnvironment
     })
   : customProvider({
       languageModels: {
-        'chat-model': openRouter('google/gemini-2.5-pro-preview', {
+        'chat-model': openRouter('x-ai/grok-3-mini', {
           reasoning: {
             exclude: true,
             effort: 'low',
           },
         }),
-        'chat-model-medium': openRouter('google/gemini-2.5-pro-preview', {
+        'chat-model-medium': openRouter('x-ai/grok-3-mini', {
           reasoning: {
             effort: 'medium',
           },
         }),
-        'title-model': openRouter('google/gemini-2.5-flash'),
-        'artifact-model': openRouter('google/gemini-2.5-flash'),
+        'title-model': openRouter('x-ai/grok-3-mini'),
+        'artifact-model': openRouter('x-ai/grok-3-mini'),
 
         // New entry for the 'anthropic-direct-sonnet' ID from models.ts
         'anthropic-direct-sonnet': openRouter('anthropic/claude-3.5-sonnet'),

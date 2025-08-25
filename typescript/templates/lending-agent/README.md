@@ -35,7 +35,7 @@ Optional overrides:
 AI_PROVIDER=openrouter  # openrouter | openai | grok | hyperbolic
 
 # Custom model (defaults to provider-specific default)
-AI_MODEL=google/gemini-2.5-flash
+AI_MODEL=x-ai/grok-3-mini
 ```
 
 ## Other Environment Variables

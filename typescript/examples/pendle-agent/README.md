@@ -29,12 +29,12 @@ When multiple providers are configured, you can specify which one to use:
 AI_PROVIDER=openrouter  # Options: openrouter, openai, grok, hyperbolic
 
 # Optional: Specify model (defaults to provider-specific model)
-AI_MODEL=google/gemini-2.5-flash  # Any model supported by your provider
+AI_MODEL=x-ai/grok-3-mini  # Any model supported by your provider
 ```
 
 Default models by provider:
 
-- OpenRouter: `google/gemini-2.5-flash`
+- OpenRouter: `x-ai/grok-3-mini`
 - OpenAI: `gpt-4o`
 - Grok: `grok-3`
 - Hyperbolic: `meta-llama/Llama-3.3-70B-Instruct`

@@ -83,7 +83,7 @@ max_tokens: 2500
 ```
 Prompt: Call mcp__openrouter__chat_completion with these exact parameters and return ONLY the model's response:
 
-model: "google/gemini-2.5-pro"
+model: "x-ai/grok-3-mini"
 messages: [{"role": "user", "content": "Hey, I'm curious - [TOPIC]. What do you honestly think? I want your genuine gut reaction and personal preference here."}]
 temperature: 0.9
 max_tokens: 5000
@@ -126,7 +126,7 @@ max_tokens: 5000
 ```
 Prompt: Call mcp__openrouter__chat_completion with these exact parameters and return ONLY the model's response:
 
-model: "google/gemini-2.5-pro"
+model: "x-ai/grok-3-mini"
 messages: [
   {"role": "system", "content": "You are an expert providing thorough analysis. Approach this with fresh analytical thinking."},
   {"role": "user", "content": "Topic: [TOPIC]\n\nContext: [RELEVANT_CONTEXT]\n\nProvide:\n1. Detailed analysis\n2. Key trade-offs\n3. Risks\n4. Devil's advocate critique of your own position\n5. Final recommendation"}
@@ -196,7 +196,7 @@ Only gather context if directly relevant:
 - **Model unavailable**: Note it and continue
 - **Gemini token issues**: Increase to 2000/4000 if needed
 - **NEVER switch models**: If a model fails (e.g., o3 requires API key), note the failure and continue with remaining models. DO NOT substitute with alternative models (e.g., o3-mini, gemini-2.0-flash-exp)
-- **Use EXACT model IDs**: Always use the precise model IDs specified: "openai/o3", "anthropic/claude-opus-4", "google/gemini-2.5-pro"
+- **Use EXACT model IDs**: Always use the precise model IDs specified: "openai/o3", "anthropic/claude-opus-4", "x-ai/grok-3-mini"
 
 ## Edge Cases
 

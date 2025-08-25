@@ -132,7 +132,7 @@ curl http://localhost:3007/.well-known/agent.json
 | `XAI_API_KEY`        | Grok (xAI) API key                                                                                  | Conditional |
 | `HYPERBOLIC_API_KEY` | Hyperbolic API key                                                                                  | Conditional |
 | `AI_PROVIDER`        | Preferred AI provider (`openrouter`, `openai`, `grok`, `hyperbolic`). Defaults to first configured. | No          |
-| `AI_MODEL`           | Override model name (e.g., `google/gemini-2.5-flash`). Defaults to provider's built-in default.     | No          |
+| `AI_MODEL`           | Override model name (e.g., `x-ai/grok-3-mini`). Defaults to provider's built-in default.     | No          |
 | `PORT`               | Server port (default: 3007)                                                                         | No          |
 | `LOG_LEVEL`          | Logging level (default: debug)                                                                      | No          |
 

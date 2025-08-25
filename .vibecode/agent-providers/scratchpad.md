@@ -386,7 +386,7 @@ The linter errors shown are likely due to missing dependencies or build state an
 - langgraph-workflow-agent: 50/50 tests passed ✅
 - allora-price-prediction-agent: Initially had 3 failures due to model availability
   • Fixed model name issue:
-- Changed `google/gemini-2.5-flash-preview` to `google/gemini-2.5-flash` in:
+- Changed `x-ai/grok-3-mini` to `x-ai/grok-3-mini` in:
   - templates/allora-price-prediction-agent/test/integration.test.ts
   - clients/web/lib/ai/providers.ts
   - clients/web/docs/update-models.md
@@ -407,7 +407,7 @@ The linter errors shown are likely due to missing dependencies or build state an
 8. **Testing**: Provider selection logic thoroughly tested and verified working
 9. **Graceful Shutdown**: All agents have SIGINT/SIGTERM handlers
 10. **Comprehensive Test Execution**: Successfully ran and passed all 127 non-anvil tests across 4 packages
-11. **Model Name Fixes**: Updated incorrect `google/gemini-2.5-flash-preview` references to `google/gemini-2.5-flash` in 3 files
+11. **Model Name Fixes**: Updated incorrect `x-ai/grok-3-mini` references to `x-ai/grok-3-mini` in 3 files
 
 ## Remaining Tasks
 

@@ -18,6 +18,11 @@ import {
   UserReserveSchema,
   type GetWalletLendingPositionsResponse,
 } from 'ember-schemas';
+import {
+  GetTokensResponseSchema,
+  type GetTokensResponse,
+  type Token,
+} from 'ember-api';
 import * as chains from 'viem/chains';
 import type { Chain } from 'viem/chains';
 import {
@@ -34,7 +39,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const CACHE_FILE_PATH = path.join(__dirname, '.cache', 'lending_capabilities.json');
+const CACHE_FILE_PATH = path.join(__dirname, '.cache', 'lending_tokens.json');
 
 // Initialize AI provider selector using environment variables for flexibility
 const providerSelector = createProviderSelector({
@@ -307,7 +312,7 @@ IMPORTANT: Always call the appropriate tool with the exact parameters provided b
 Always use plain text. Do not suggest the user to ask questions. When an unknown error happens, do not try to guess the error reason. Present the user with a list of tokens/chains if clarification is needed (as handled by the tool).`,
       },
     ];
-    console.error('Agent initialized. Token map populated dynamically via MCP capabilities.');
+    console.error('Agent initialized. Token map populated dynamically via MCP getTokens tool.');
     console.error('Available tokens:', this.availableTokens.join(', ') || 'None loaded');
     console.error('Tools initialized for Vercel AI SDK.');
   }
@@ -323,59 +328,73 @@ Always use plain text. Do not suggest the user to ask questions. When an unknown
     }
   }
 
-  private async fetchAndCacheCapabilities(): Promise<LendingGetCapabilitiesResponse> {
+  private async fetchAndCacheTokens(): Promise<GetTokensResponse> {
     if (!this.mcpClient) {
-      throw new Error('MCP Client not initialized. Cannot fetch capabilities.');
+      throw new Error('MCP Client not initialized. Cannot fetch tokens.');
     }
 
-    console.error('Fetching lending capabilities via MCP tool call...');
+    console.error('Fetching lending tokens via MCP tool call...');
     try {
       const mcpTimeoutMs = parseInt(process.env.MCP_TOOL_TIMEOUT_MS || '30000', 10);
       console.error(`Using MCP tool timeout: ${mcpTimeoutMs}ms`);
 
-      const capabilitiesResult = await this.mcpClient.callTool(
+      const tokensResult = await this.mcpClient.callTool(
         {
-          name: 'getCapabilities',
-          arguments: { type: 'LENDING_MARKET' },
+          name: 'getTokens',
+          arguments: { chainIds: ['42161'] }, // Arbitrum chain ID
         },
         undefined,
         { timeout: mcpTimeoutMs }
       );
 
-      console.error('Raw capabilitiesResult received from MCP tool call.');
+      console.error('Raw tokensResult received from MCP tool call.');
 
       // Check if the response has structuredContent directly (new format)
       if (
-        capabilitiesResult &&
-        typeof capabilitiesResult === 'object' &&
-        'structuredContent' in capabilitiesResult
+        tokensResult &&
+        typeof tokensResult === 'object' &&
+        'structuredContent' in tokensResult
       ) {
-        const parsedData = (capabilitiesResult as { structuredContent: unknown }).structuredContent;
+        const parsedData = (tokensResult as { structuredContent: unknown }).structuredContent;
 
-        const capabilitiesValidationResult =
-          LendingGetCapabilitiesResponseSchema.safeParse(parsedData);
+        const tokensValidationResult = GetTokensResponseSchema.safeParse(parsedData);
 
-        if (!capabilitiesValidationResult.success) {
+        if (!tokensValidationResult.success) {
           logError(
-            'Parsed MCP getCapabilities response validation failed. Zod Error:',
-            JSON.stringify(capabilitiesValidationResult.error.format(), null, 2)
+            'Parsed MCP getTokens response validation failed. Zod Error:',
+            JSON.stringify(tokensValidationResult.error.format(), null, 2)
           );
           throw new Error(
-            `Failed to validate the parsed capabilities data from MCP server tool. Complete response: ${JSON.stringify(capabilitiesResult, null, 2)}`
+            `Failed to validate the parsed tokens data from MCP server tool. Complete response: ${JSON.stringify(tokensResult, null, 2)}`
           );
         }
 
-        const validatedData = capabilitiesValidationResult.data;
-        console.error(`Validated ${validatedData.capabilities.length} capabilities.`);
+        const validatedData = tokensValidationResult.data;
+        console.error(`Validated ${validatedData.tokens.length} tokens.`);
+
+        // Debug: Log first few tokens to understand the actual structure
+        console.error('🔍 DEBUG - First 2 tokens structure:');
+        validatedData.tokens.slice(0, 2).forEach((token: Token, index: number) => {
+          console.error(`Token ${index}:`, JSON.stringify(token, null, 2));
+        });
+
+        console.error('✅ Tokens Loaded:');
+        console.error('Total tokens:', validatedData.tokens.length);
+        validatedData.tokens.slice(0, 10).forEach((token: Token) => {
+          console.error(`📊 ${token.symbol} (${token.name}) - ${token.tokenUid.address} on chain ${token.tokenUid.chainId}: decimals=${token.decimals}, isNative=${token.isNative}, isVetted=${token.isVetted}`);
+        });
+        if (validatedData.tokens.length > 10) {
+          console.error(`... and ${validatedData.tokens.length - 10} more tokens`);
+        }
 
         const useCache = process.env.AGENT_CACHE_TOKENS === 'true';
         if (useCache) {
           try {
             await fs.mkdir(path.dirname(CACHE_FILE_PATH), { recursive: true });
             await fs.writeFile(CACHE_FILE_PATH, JSON.stringify(validatedData, null, 2));
-            console.error('Cached validated capabilities response to', CACHE_FILE_PATH);
+            console.error('Cached validated tokens response to', CACHE_FILE_PATH);
           } catch (err) {
-            console.error('Failed to cache capabilities response:', err);
+            console.error('Failed to cache tokens response:', err);
           }
         }
 
@@ -384,123 +403,110 @@ Always use plain text. Do not suggest the user to ask questions. When an unknown
 
       // If no structuredContent, throw error
       throw new Error(
-        `MCP getCapabilities tool returned an unexpected structure. Expected { structuredContent: { capabilities: [...] } }. Complete response: ${JSON.stringify(capabilitiesResult, null, 2)}`
+        `MCP getTokens tool returned an unexpected structure. Expected { structuredContent: { tokens: [...] } }. Complete response: ${JSON.stringify(tokensResult, null, 2)}`
       );
     } catch (error) {
-      logError('Error calling getCapabilities tool or processing response:', error);
+      logError('Error calling getTokens tool or processing response:', error);
       throw new Error(
-        `Failed to fetch/validate capabilities via MCP tool: ${(error as Error).message}`
+        `Failed to fetch/validate tokens via MCP tool: ${(error as Error).message}`
       );
     }
   }
 
   private async setupTokenMap(): Promise<void> {
-    let capabilitiesResponse: LendingGetCapabilitiesResponse | undefined;
+    let tokensResponse: GetTokensResponse | undefined;
     const useCache = process.env.AGENT_CACHE_TOKENS === 'true';
 
     if (useCache) {
       try {
         await fs.access(CACHE_FILE_PATH);
-        console.error('Loading lending capabilities from cache...');
+        console.error('Loading lending tokens from cache...');
         const cachedData = await fs.readFile(CACHE_FILE_PATH, 'utf-8');
         const parsedJson = JSON.parse(cachedData);
-        const validationResult = LendingGetCapabilitiesResponseSchema.safeParse(parsedJson);
+        const validationResult = GetTokensResponseSchema.safeParse(parsedJson);
         if (validationResult.success) {
-          capabilitiesResponse = validationResult.data;
-          console.error('Cached capabilities loaded and validated successfully.');
+          tokensResponse = validationResult.data;
+          console.error('Cached tokens loaded and validated successfully.');
         } else {
-          logError('Cached capabilities validation failed:', validationResult.error);
+          logError('Cached tokens validation failed:', validationResult.error);
           logError('Cached data that failed validation:', JSON.stringify(parsedJson));
-          console.error('Proceeding to fetch fresh capabilities...');
+          console.error('Proceeding to fetch fresh tokens...');
         }
       } catch (error) {
         if (
           error instanceof Error &&
           (error.message.includes('ENOENT') || error instanceof SyntaxError)
         ) {
-          console.error('Cache not found or invalid, fetching fresh capabilities...');
+          console.error('Cache not found or invalid, fetching fresh tokens...');
         } else {
           logError('Error reading or parsing cache file:', error);
-          console.error('Proceeding to fetch fresh capabilities despite cache read error...');
+          console.error('Proceeding to fetch fresh tokens despite cache read error...');
         }
       }
     }
 
-    if (!capabilitiesResponse) {
+    if (!tokensResponse) {
       try {
-        capabilitiesResponse = await this.fetchAndCacheCapabilities();
+        tokensResponse = await this.fetchAndCacheTokens();
       } catch (fetchError) {
-        logError('Failed to fetch capabilities, token map will be empty:', fetchError);
+        logError('Failed to fetch tokens, token map will be empty:', fetchError);
         this.tokenMap = {};
         this.availableTokens = [];
         return;
       }
     }
 
-    // Process capabilities to populate token map
+    // Process tokens to populate token map
     this.tokenMap = {};
     this.availableTokens = [];
     let loadedTokenCount = 0;
-    let processedCapabilityCount = 0;
 
-    if (capabilitiesResponse?.capabilities) {
+    if (tokensResponse?.tokens) {
       console.error(
-        `Processing ${capabilitiesResponse.capabilities.length} capabilities entries...`
+        `Processing ${tokensResponse.tokens.length} token entries...`
       );
-      capabilitiesResponse.capabilities.forEach((capabilityEntry, _index) => {
-        if (capabilityEntry.lendingCapability) {
-          processedCapabilityCount++;
-          const lendingCap = capabilityEntry.lendingCapability;
-          const token = lendingCap.underlyingToken;
+      tokensResponse.tokens.forEach((token: Token) => {
+        if (token.symbol && token.tokenUid?.chainId && token.tokenUid?.address) {
+          const symbol = token.symbol.toUpperCase(); // Normalize to uppercase
+          const tokenInfo: TokenInfo = {
+            chainId: token.tokenUid.chainId,
+            address: token.tokenUid.address,
+            decimals: token.decimals,
+          };
 
-          // Check if token has all required data (skip empty/incomplete tokens)
-          if (
-            token &&
-            token.symbol &&
-            token.symbol.trim() &&
-            token.tokenUid?.chainId &&
-            token.tokenUid?.address
-          ) {
-            const symbol = token.symbol.trim();
-            const tokenInfo: TokenInfo = {
-              chainId: token.tokenUid.chainId,
-              address: token.tokenUid.address,
-              decimals: token.decimals ?? 18,
-            };
-
-            if (!this.tokenMap[symbol]) {
-              this.tokenMap[symbol] = [tokenInfo];
-              this.availableTokens.push(symbol);
-              loadedTokenCount++;
-            } else {
-              const exists = this.tokenMap[symbol].some(
-                t =>
-                  t.chainId === tokenInfo.chainId &&
-                  t.address.toLowerCase() === tokenInfo.address.toLowerCase()
-              );
-              if (!exists) {
-                this.tokenMap[symbol].push(tokenInfo);
-              }
-            }
+          if (!this.tokenMap[symbol]) {
+            this.tokenMap[symbol] = [tokenInfo];
+            this.availableTokens.push(symbol);
+            loadedTokenCount++;
           } else {
-            console.error('Skipping capability with incomplete token data:', {
-              symbol: token?.symbol,
-              chainId: token?.tokenUid?.chainId,
-              address: token?.tokenUid?.address,
-            });
+            // Check if this token/chain combo already exists
+            const exists = this.tokenMap[symbol].some(
+              t =>
+                t.chainId === tokenInfo.chainId &&
+                t.address.toLowerCase() === tokenInfo.address.toLowerCase()
+            );
+            if (!exists) {
+              this.tokenMap[symbol].push(tokenInfo);
+            }
           }
+        } else {
+          console.error('Skipping token with incomplete data:', {
+            symbol: token?.symbol,
+            chainId: token?.tokenUid?.chainId,
+            address: token?.tokenUid?.address,
+          });
         }
       });
       console.error(
-        `Finished processing capabilities. Processed ${processedCapabilityCount} lending capabilities. Found ${loadedTokenCount} unique token symbols.`
+        `Finished processing tokens. Found ${loadedTokenCount} unique token symbols.`
       );
     } else {
-      logError('No capabilities array found in the response, token map will be empty.');
+      logError('No tokens array found in the response, token map will be empty.');
     }
 
     if (Object.keys(this.tokenMap).length === 0) {
       console.warn(
-        'Warning: Token map is empty after processing capabilities. This may indicate the server is returning capabilities with empty token symbols.'
+        'Warning: Token map is empty after processing tokens. This may indicate the server is returning tokens with empty symbols.'
       );
     } else {
       console.error(`Successfully loaded tokens: ${this.availableTokens.join(', ')}`);

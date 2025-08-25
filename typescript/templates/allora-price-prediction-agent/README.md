@@ -147,7 +147,7 @@ allora-price-prediction-agent/
 | `HYPERBOLIC_API_KEY` | Hyperbolic API key                                                | Conditional |
 | `ALLORA_API_KEY`     | Allora API key (required for price prediction data)               | Yes         |
 | `AI_PROVIDER`        | Preferred provider (`openrouter`, `openai`, `grok`, `hyperbolic`) | No          |
-| `AI_MODEL`           | Model override (e.g., `google/gemini-2.5-flash`)                  | No          |
+| `AI_MODEL`           | Model override (e.g., `x-ai/grok-3-mini`)                  | No          |
 | `PORT`               | Server port for the agent (default: 3008)                         | No          |
 | `ALLORA_MCP_PORT`    | Port for the spawned Allora MCP server (default: 3009)            | No          |
 

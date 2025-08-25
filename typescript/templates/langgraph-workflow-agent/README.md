@@ -90,7 +90,7 @@ pnpm install
    AI_PROVIDER=openrouter
 
    # Optional: Model override (defaults to provider-specific default)
-   AI_MODEL=google/gemini-2.5-flash
+   AI_MODEL=x-ai/grok-3-mini
    ```
 
 See `env.example` for all available configuration options.
