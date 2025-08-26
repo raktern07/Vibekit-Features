@@ -329,8 +329,8 @@ export async function handleSupplyLiquidity(
         chainId: selectedPair.token1.chainId,
         address: selectedPair.token1.address,
       },
-      amount0: params.amount0,
-      amount1: params.amount1,
+      amount0: amount0Atomic.toString(),
+      amount1: amount1Atomic.toString(),
       range: {
         type: 'limited' as const,
         minPrice: params.priceFrom,

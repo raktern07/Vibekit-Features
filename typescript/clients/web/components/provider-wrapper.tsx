@@ -12,7 +12,7 @@ export function ProviderWrapper({ children }: { children: React.ReactNode }) {
   const config = useMemo(
     () =>
       getDefaultConfig({
-        appName: 'Arbitrum VibeKit',
+        appName: 'Maxxit AI Agents',
         projectId: '4b49e5e63b9f6253943b470873b47208',
         chains: [arbitrum, mainnet],
         ssr: true, // If your dApp uses server side rendering (SSR)

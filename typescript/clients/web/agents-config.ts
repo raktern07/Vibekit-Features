@@ -96,23 +96,23 @@ export const chatAgents = [
       },
     ],
   },
-  // {
-  //   id: "ember-pendle" as const,
-  //   name: "Pendle",
-  //   description: "Test agent for Pendle",
-  //   suggestedActions: [
-  //     {
-  //       title: "Deposit WETH",
-  //       label: "to my balance",
-  //       action: "Deposit WETH to my balance",
-  //     },
-  //     {
-  //       title: "Check",
-  //       label: "balance",
-  //       action: "Check balance",
-  //     },
-  //   ],
-  // },
+  {
+    id: "ember-pendle" as const,
+    name: "Pendle",
+    description: "Test agent for Pendle",
+    suggestedActions: [
+      {
+        title: "Deposit WETH",
+        label: "to my balance",
+        action: "Deposit WETH to my balance",
+      },
+      {
+        title: "Check",
+        label: "balance",
+        action: "Check balance",
+      },
+    ],
+  },
   {
     id: 'all' as const,
     name: 'All agents',
@@ -124,10 +124,10 @@ export const chatAgents = [
         action: 'What Agents are available?',
       },
       {
-        title: 'What can Ember AI',
-        label: 'help me with?',
-        action: 'What can Ember AI help me with?',
-      },
+        title: 'What can AI do',
+        label: 'for me?',
+        action: 'What can AI do for me?',
+      }
     ],
   },
 ] as const;
@@ -139,7 +139,7 @@ export const DEFAULT_SERVER_URLS = new Map<ChatAgentId, string>([
   // ['quickstart-agent-template', 'http://quickstart-agent-template:3007/sse'],
   ['allora-price-prediction-agent', 'http://allora-price-prediction-agent:3008/sse'],
   ["ember-lp", "http://liquidity-agent-no-wallet:3002/sse"],
-  // ["ember-pendle", "http://pendle-agent:3003/sse"],
+  ["ember-pendle", "http://pendle-agent:3003/sse"],
 ]);
 
 export type ChatAgentId = (typeof chatAgents)[number]['id'];
