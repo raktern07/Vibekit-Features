@@ -10,7 +10,7 @@
   const CHATBOT_CONFIG = {
     version: '1.0.0',
     containerId: 'maxxit-chatbot-container',
-    apiEndpoint: 'http://localhost:3000', // Change this to your hosted domain
+    apiEndpoint: 'https://agentvibe.xcan.dev', // Change this to your hosted domain
     position: 'bottom-right',
     primaryColor: '#0ea5e9',
     borderRadius: '12px',
