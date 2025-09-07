@@ -73,4 +73,4 @@ Default models by provider:
 - OpenRouter: `x-ai/grok-3-mini`
 - OpenAI: `gpt-4o`
 - Grok: `grok-3`
-- Hyperbolic: `meta-llama/Llama-3.3-70B-Instruct`
+- Hyperbolic: `x-ai/grok-3-mini`

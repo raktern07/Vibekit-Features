@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { useAccount } from 'wagmi';
 import { useSession } from 'next-auth/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { CryptoCarousel } from './crypto-tweets-carousel';
 
 export function Chat({
   id,
@@ -81,7 +82,9 @@ export function Chat({
           </div>
         )}
         <ChatHeader />
-
+        <div className="px-4 py-1 bg-background/50 border-b">
+          <CryptoCarousel />
+        </div>
         <Messages
           chatId={id}
           status={status}

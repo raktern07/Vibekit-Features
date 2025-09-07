@@ -44,7 +44,7 @@ export function createProviderSelector(config: ProviderSelectorConfig): Provider
   if (config.hyperbolicApiKey) {
     const hyperbolicInstance = createHyperbolic({ apiKey: config.hyperbolicApiKey });
     selector.hyperbolic = (model?: string) =>
-      hyperbolicInstance(model || 'meta-llama/Llama-3.3-70B-Instruct');
+      hyperbolicInstance(model || 'x-ai/grok-3-mini');
   }
 
   // Warn if no providers are configured

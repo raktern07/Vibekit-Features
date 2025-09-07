@@ -112,7 +112,7 @@ describe.skipIf(!hasAnyKey)('Provider Selector Integration Tests', () => {
 
   it.skipIf(!hasHyperbolic)('should create a valid Hyperbolic model instance', () => {
     const selector = createProviderSelector({ hyperbolicApiKey: API_KEYS.hyperbolicApiKey! });
-    const model = selector.hyperbolic!('meta-llama/Llama-3.2-3B-Instruct');
+    const model = selector.hyperbolic!('x-ai/grok-3-mini');
 
     // Verify it's a valid LanguageModelV1 instance
     expect(model).toBeDefined();
@@ -121,7 +121,7 @@ describe.skipIf(!hasAnyKey)('Provider Selector Integration Tests', () => {
     expect(model).toHaveProperty('doGenerate');
 
     // Check specific properties
-    expect(model.modelId).toBe('meta-llama/Llama-3.2-3B-Instruct');
+    expect(model.modelId).toBe('');
     expect(model.provider).toBe('hyperbolic.chat');
   });
 
@@ -219,7 +219,7 @@ describe.skipIf(!hasAnyKey)('Provider Selector Integration Tests', () => {
     'should successfully call Hyperbolic API',
     async () => {
       const selector = createProviderSelector({ hyperbolicApiKey: API_KEYS.hyperbolicApiKey! });
-      const model = selector.hyperbolic!('meta-llama/Llama-3.2-3B-Instruct');
+      const model = selector.hyperbolic!('x-ai/grok-3-mini');
 
       // Make a minimal API call
       const result = await model.doGenerate({

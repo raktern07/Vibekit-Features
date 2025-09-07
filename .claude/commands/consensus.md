@@ -83,7 +83,7 @@ max_tokens: 2500
 ```
 Prompt: Call mcp__openrouter__chat_completion with these exact parameters and return ONLY the model's response:
 
-model: "x-ai/grok-3-mini"
+model: ""
 messages: [{"role": "user", "content": "Hey, I'm curious - [TOPIC]. What do you honestly think? I want your genuine gut reaction and personal preference here."}]
 temperature: 0.9
 max_tokens: 5000

@@ -130,9 +130,9 @@ describe('createProviderSelector', () => {
     });
 
     // Test Hyperbolic
-    const hyperbolicModel = selector.hyperbolic!('meta-llama/Llama-3.2-3B-Instruct');
+    const hyperbolicModel = selector.hyperbolic!('x-ai/grok-3-mini');
     expect(hyperbolicModel).toMatchObject({
-      modelId: 'hyperbolic:meta-llama/Llama-3.2-3B-Instruct',
+      modelId: 'hyperbolic:x-ai/grok-3-mini',
       provider: 'hyperbolic',
     });
   });

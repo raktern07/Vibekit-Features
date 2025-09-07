@@ -28,7 +28,7 @@ COPY examples/swapping-agent-no-wallet/package.json ./examples/swapping-agent-no
 # ------------------------------
 # 3. Install deps based on the copied package.json set
 # ------------------------------
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # ------------------------------
 # 4. Now copy the rest of the source code
