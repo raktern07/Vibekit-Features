@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useSession } from 'next-auth/react';
 import { X, MessageCircle, Send, Bot, Wallet, Edit2, Check, XCircle, ChevronDown, Trash } from 'lucide-react';
 import { chatAgents, DEFAULT_SERVER_URLS } from '../../agents-config';
 import { generateUUID } from '@/lib/utils';
@@ -105,7 +106,7 @@ export function ChatbotWidget({
   primaryColor = '#0ea5e9',
   borderRadius = '12px',
   zIndex = 9999,
-  enabledAgents = ['ember-aave', 'ember-camelot', 'ember-pendle', 'ember-lp']
+  enabledAgents = ['ember-aave', 'ember-camelot', 'ember-lp', 'ember-pendle']
 }: ChatbotWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<string>('ember-aave');
@@ -121,6 +122,7 @@ export function ChatbotWidget({
   const [showTooltip, setShowTooltip] = useState(false);
 
   const { address, isConnected } = useAccount();
+  const { data: session, status: sessionStatus } = useSession();
 
   // Generate a stable UUID for this chatbot session
   const chatId = useMemo(() => generateUUID(), []);
@@ -130,12 +132,26 @@ export function ChatbotWidget({
     enabledAgents.includes(agent.id) || agent.id === 'all'
   );
 
+  // Log configuration details
+  useEffect(() => {
+    console.log('🔧 [CHATBOT] useChat configuration:');
+    console.log('  - Chat ID:', chatId);
+    console.log('  - Model:', 'chat-model');
+    console.log('  - Wallet address:', address);
+    console.log('  - Is connected:', isConnected);
+    console.log('  - Session status:', sessionStatus);
+    console.log('  - Session user:', session?.user?.id || 'No user');
+    console.log('  - Session user address:', session?.user?.address || 'No address');
+    console.log('  - Available agents:', availableAgents.map(a => a.id));
+    console.log('  - Selected agent:', selectedAgent);
+  }, [chatId, address, isConnected, session, sessionStatus, availableAgents, selectedAgent]);
+
   // Use the exact same pattern as the main Chat component
   const { messages, input, handleInputChange, handleSubmit, isLoading, setMessages, reload } = useChat({
     id: chatId,
     body: {
       id: chatId,
-      selectedChatModel: 'x-ai/grok-3-mini',
+      selectedChatModel: 'chat-model',
       context: {
         walletAddress: address,
       },
@@ -144,8 +160,42 @@ export function ChatbotWidget({
     experimental_throttle: 100,
     sendExtraMessageFields: true,
     generateId: generateUUID,
-    onError: () => {
-      console.error('🚨 [CHATBOT] Chat error occurred');
+    onError: async (err) => {
+      console.error('🚨 [CHATBOT] Chat error occurred:', err);
+      console.error('🚨 [CHATBOT] Error type:', typeof err);
+      console.error('🚨 [CHATBOT] Error message:', err?.message || 'No message');
+      console.error('🚨 [CHATBOT] Error cause:', err?.cause || 'No cause');
+      console.error('🚨 [CHATBOT] Error stack:', err?.stack || 'No stack');
+
+      // Try to extract response details if available
+      try {
+        // @ts-ignore - some adapters attach response details
+        const response = err?.response;
+        if (response) {
+          console.error('🧪 [CHATBOT] Response status:', response.status, response.statusText);
+          console.error('🧪 [CHATBOT] Response headers:', Object.fromEntries(response.headers || []));
+
+          // Try to read response text
+          if (typeof response.text === 'function') {
+            const text = await response.text();
+            console.error('🧪 [CHATBOT] Response text:', text);
+          } else if (response.body) {
+            console.error('🧪 [CHATBOT] Response body:', response.body);
+          }
+        }
+
+        // Check if it's a fetch error
+        if (err?.name === 'TypeError' && err?.message?.includes('fetch')) {
+          console.error('🧪 [CHATBOT] This appears to be a network/fetch error');
+        }
+
+        // Log the full error object
+        console.error('🧪 [CHATBOT] Full error object:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
+
+      } catch (e) {
+        console.error('🧪 [CHATBOT] Failed to extract error details:', e);
+      }
+
       setIsSubmitting(false);
     },
     onFinish: () => {
@@ -188,11 +238,29 @@ export function ChatbotWidget({
     }, 100);
   }, []);
 
+  // Log state changes
+  useEffect(() => {
+    console.log('📊 [CHATBOT] State update:');
+    console.log('  - Messages count:', messages.length);
+    console.log('  - Is loading:', isLoading);
+    console.log('  - Is submitting:', isSubmitting);
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      console.log('  - Last message role:', lastMessage.role);
+      console.log('  - Last message content preview:',
+        typeof lastMessage.content === 'string'
+          ? lastMessage.content.substring(0, 100)
+          : 'Non-string content'
+      );
+    }
+  }, [messages, isLoading, isSubmitting]);
+
   // Clear submitting state when assistant starts responding
   useEffect(() => {
     if (messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
       if (lastMessage.role === 'assistant' && lastMessage.content) {
+        console.log('✅ [CHATBOT] Assistant response received, clearing submitting state');
         setIsSubmitting(false);
       }
     }
@@ -255,6 +323,12 @@ export function ChatbotWidget({
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('🚀 [CHATBOT] Form submitted, input:', input);
+    console.log('🚀 [CHATBOT] Selected agent:', selectedAgent);
+    console.log('🚀 [CHATBOT] Wallet address:', address);
+    console.log('🚀 [CHATBOT] Is connected:', isConnected);
+    console.log('🚀 [CHATBOT] Chat ID:', chatId);
+
     setIsSubmitting(true);
     handleSubmit(e);
   };
@@ -355,8 +429,30 @@ export function ChatbotWidget({
             </div>
           </div>
 
+          {/* Authentication Status */}
+          {(!session || !session?.user) && (
+            <div className="bg-red-50 border-b border-red-200 p-3">
+              <div className="flex items-center gap-2 text-red-800 text-sm">
+                <Wallet className="w-4 h-4" />
+                <span>Authentication required to chat with agents</span>
+              </div>
+              <div className="mt-2">
+                <ConnectButton.Custom>
+                  {({ openConnectModal }) => (
+                    <button
+                      onClick={openConnectModal}
+                      className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition-colors"
+                    >
+                      Connect & Sign In
+                    </button>
+                  )}
+                </ConnectButton.Custom>
+              </div>
+            </div>
+          )}
+
           {/* Wallet Connection Status */}
-          {!isConnected && (
+          {(session && session?.user) && !isConnected && (
             <div className="bg-yellow-50 border-b border-yellow-200 p-3">
               <div className="flex items-center gap-2 text-yellow-800 text-sm">
                 <Wallet className="w-4 h-4" />
@@ -722,11 +818,11 @@ export function ChatbotWidget({
                 onChange={handleInputChange}
                 placeholder="Ask me anything about DeFi..."
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                disabled={isLoading || isSubmitting}
+                disabled={isLoading || isSubmitting || !session || !session?.user}
               />
               <button
                 type="submit"
-                disabled={isLoading || isSubmitting || !input.trim()}
+                disabled={isLoading || isSubmitting || !input.trim() || !session || !session?.user}
                 className="px-4 py-2 text-white rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
                 style={{ backgroundColor: primaryColor }}
               >

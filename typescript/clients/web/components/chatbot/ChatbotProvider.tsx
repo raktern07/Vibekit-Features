@@ -47,7 +47,7 @@ export function ChatbotProvider({
   primaryColor = '#0ea5e9',
   borderRadius = '12px',
   zIndex = 9999,
-  enabledAgents = ['ember-aave', 'ember-camelot', 'ember-pendle', 'ember-lp'],
+  enabledAgents = ['ember-aave', 'ember-camelot', 'ember-lp', 'ember-pendle'],
   wagmiConfig,
 }: ChatbotProviderProps) {
   // Use provided wagmi config or create default

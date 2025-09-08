@@ -15,7 +15,7 @@
     primaryColor: '#0ea5e9',
     borderRadius: '12px',
     zIndex: 9999,
-    enabledAgents: ['ember-aave', 'ember-camelot', 'ember-pendle', 'ember-lp']
+    enabledAgents: ['ember-aave', 'ember-camelot', 'ember-lp', 'ember-pendle']
   };
 
   // Prevent multiple initialization
@@ -159,19 +159,19 @@
           <div style="display: grid; gap: 8px;">
             <div style="padding: 12px; background: #f3f4f6; border-radius: 6px;">
               <div style="font-weight: 500; font-size: 14px; color: #1f2937;">Lending</div>
-              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">AAVE lending operations</div>
+              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">AAVE lending operations - deposit, withdraw, borrow, and repay assets</div>
             </div>
             <div style="padding: 12px; background: #f3f4f6; border-radius: 6px;">
-              <div style="font-weight: 500; font-size: 14px; color: #1f2937;">Trading</div>
-              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Camelot DEX trading</div>
-            </div>
-            <div style="padding: 12px; background: #f3f4f6; border-radius: 6px;">
-              <div style="font-weight: 500; font-size: 14px; color: #1f2937;">Pendle</div>
-              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Pendle DEX trading</div>
+              <div style="font-weight: 500; font-size: 14px; color: #1f2937;">Swapping</div>
+              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Camelot DEX trading - swap tokens with intelligent routing</div>
             </div>
             <div style="padding: 12px; background: #f3f4f6; border-radius: 6px;">
               <div style="font-weight: 500; font-size: 14px; color: #1f2937;">Liquidity</div>
-              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Liquidity pool management</div>
+              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Camelot liquidity provisioning - add/remove liquidity from pools</div>
+            </div>
+            <div style="padding: 12px; background: #f3f4f6; border-radius: 6px;">
+              <div style="font-weight: 500; font-size: 14px; color: #1f2937;">Pendle</div>
+              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Pendle yield trading - trade future yields and earn fixed rates</div>
             </div>
           </div>
         </div>
